@@ -1,0 +1,20 @@
+create database desafio_livraria;
+
+create table venda(
+	numero int auto_increment primary key,
+    cliente varchar(50),
+    valor decimal(7,2)
+);
+
+create table livro(
+	id int auto_increment primary key,
+    titulo varchar(45) not null,
+    autores varchar(45) not null,
+    editora varchar(45) not null,
+    preco decimal(7,2) not null,
+    tamanho int,
+    frete decimal(5,2),
+    estoque int,
+	venda_id int,
+    foreign key (venda_id) references venda(numero)
+);
