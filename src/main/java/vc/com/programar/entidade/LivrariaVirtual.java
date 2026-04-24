@@ -1,15 +1,11 @@
-package vc.com.programar;
-
-import vc.com.programar.entidade.Eletronico;
-import vc.com.programar.entidade.Impresso;
-import vc.com.programar.entidade.Venda;
+package vc.com.programar.entidade;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class LivrariaVirtual {
-    private static final Scanner scan = new Scanner(System.in);
+    private final Scanner scan = new Scanner(System.in);
     private final int max_impressos = 10;
     private final int max_eletronicos = 20;
     private final int max_vendas = 50;
@@ -19,43 +15,6 @@ public class LivrariaVirtual {
     private int numImpressos = 0;
     private int numEletronicos = 0;
     private int numVendas = 0;
-
-    public static void main(String[] args) {
-        impressos.add(new Impresso(
-            "Padrões de Projeto",
-            "Erich Gamma et al.",
-            "Addison-Wesley",
-            189.90,
-            22.00,
-            10
-            ));
-
-        impressos.add(new Impresso(
-            "Spring Boot em Ação",
-            "Craig Walls",
-            "Manning",
-            129.90,
-            15.00,
-            20
-        ));
-
-
-        int opcao = 0;
-        do {
-            System.out.println("""
-                    Escolha uma opção:
-                    1 - Cadastrar Livro
-                    2 - Realizar Venda
-                    3 - Listar Livros
-                    4 - Listar Vendas
-                    5 - Sair do Programa
-                    """);
-            opcao = capturarNumero();
-            if (opcao == 3){
-                listarLivros();
-            }
-        } while (opcao > 0 && opcao < 5);
-    }
 
     public void cadastrarLivro(){
 
@@ -67,7 +26,7 @@ public class LivrariaVirtual {
                 """);
     }
 
-    public static void realizarVenda(){
+    public void realizarVenda(){
 
         System.out.println("Informe o nome do cliente:");
         String nomeCliente = capturarTexto();
@@ -79,19 +38,19 @@ public class LivrariaVirtual {
         }
     }
 
-    public static String capturarTexto(){
+    public String capturarTexto(){
         return scan.nextLine();
     }
 
-    public static Integer capturarNumero(){
+    public Integer capturarNumero(){
         return scan.nextInt();
     }
 
-    public static Double capturarDecimal(){
+    public Double capturarDecimal(){
         return scan.nextDouble();
     }
 
-    public static void listarLivrosImpressos(){
+    public void listarLivrosImpressos(){
         System.out.printf("| %-20s | %-20s | %-20s | %-20s | %-20s | %-20s |%n",
                 "Impressos",
                 "Autores",
@@ -104,7 +63,7 @@ public class LivrariaVirtual {
         }
     }
 
-    public static void listarLivrosEletronicos(){
+    public void listarLivrosEletronicos(){
         System.out.printf("| %20s | %20s | %20s | %20s | %20s |%n",
                 "Eletronicos",
                 "Autores",
@@ -116,7 +75,7 @@ public class LivrariaVirtual {
         }
     }
 
-    public static void listarLivros(){
+    public void listarLivros(){
         System.out.printf("| %-20s | %-20s | %-20s | %-20s |%n",
                 "Eletronicos",
                 "Autores",
@@ -130,7 +89,10 @@ public class LivrariaVirtual {
         }
     }
 
-    public static void listarVendas(){
-
+    public void listarVendas(){
+        System.out.println("Vendas Realizadas:");
+        for (Venda v : vendas) {
+            v.listarLivros();
+        }
     }
 }
