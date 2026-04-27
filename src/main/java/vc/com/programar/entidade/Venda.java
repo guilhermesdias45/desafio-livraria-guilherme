@@ -14,7 +14,7 @@ public class Venda {
     private int numero;
     private String cliente;
     private double valor;
-    @OneToMany
+    @ManyToMany
     private List<Livro> livros;
 
     public Venda() {

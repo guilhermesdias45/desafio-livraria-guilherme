@@ -1,26 +1,11 @@
 package vc.com.programar;
 
+import vc.com.programar.entidade.LivrariaVirtual;
+
 public class Main {
 
     public static void main(String[] args) {
-//        impressos.add(new Impresso(
-//            "Padrões de Projeto",
-//            "Erich Gamma et al.",
-//            "Addison-Wesley",
-//            189.90,
-//            22.00,
-//            10
-//            ));
-//
-//        impressos.add(new Impresso(
-//            "Spring Boot em Ação",
-//            "Craig Walls",
-//            "Manning",
-//            129.90,
-//            15.00,
-//            20
-//        ));
-
+        LivrariaVirtual lv = new LivrariaVirtual();
 
         int opcao = 0;
         do {
@@ -32,9 +17,18 @@ public class Main {
                     4 - Listar Vendas
                     5 - Sair do Programa
                     """);
-//            opcao = capturarNumero();
+            opcao = lv.capturarNumero();
+            if (opcao == 1){
+                lv.cadastrarLivro();
+            }
+            if (opcao == 2){
+                lv.realizarVenda();
+            }
             if (opcao == 3){
-//                listarLivros();
+                lv.listarLivros();
+            }
+            if (opcao == 4){
+                lv.listarVendas();
             }
         } while (opcao > 0 && opcao < 5);
     }

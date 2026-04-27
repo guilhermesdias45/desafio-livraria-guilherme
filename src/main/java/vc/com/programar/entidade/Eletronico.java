@@ -1,7 +1,13 @@
 package vc.com.programar.entidade;
 
+import jakarta.persistence.Entity;
+
+@Entity
 public class Eletronico extends Livro{
     private int tamanho;
+
+    public Eletronico() {
+    }
 
     public Eletronico(String titulo, String autores, String editora, double preco, int tamanho) {
         super(titulo, autores, editora, preco);
@@ -18,7 +24,7 @@ public class Eletronico extends Livro{
 
     @Override
     public String toString() {
-        return String.format("%s | %d |",
+        return String.format("%s %7d |",
                 super.toString(),
                 this.tamanho);
     }

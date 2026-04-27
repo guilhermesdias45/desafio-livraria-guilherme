@@ -1,11 +1,9 @@
 package vc.com.programar.entidade;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Livro {
 
     @Id
@@ -58,9 +56,17 @@ public abstract class Livro {
         this.preco = preco;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
-        return String.format("| %03d | %-20s | %-20s | %-20s | %07.2f |",
+        return String.format("| %03d | %-20s | %-20s | %-20s | R$: %07.2f |",
                 this.id,
                 this.titulo,
                 this.autores,

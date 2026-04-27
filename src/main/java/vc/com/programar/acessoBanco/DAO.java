@@ -11,6 +11,10 @@ public class DAO {
 
     public DAO() {
         this.emf = Persistence.createEntityManagerFactory("desafio_livraria");
-        this.em = emf.createEntityManager();
+//        this.em = emf.createEntityManager();
+    }
+
+    public void desligar(){
+        this.emf.close();
     }
 }

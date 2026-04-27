@@ -9,6 +9,8 @@
     <persistence-unit name="desafio_livraria" transaction-type="RESOURCE_LOCAL">
         <class>vc.com.programar.entidade.Livro</class>
         <class>vc.com.programar.entidade.Venda</class>
+        <class>vc.com.programar.entidade.Impresso</class>
+        <class>vc.com.programar.entidade.Eletronico</class>
 
         <properties>
             <property name="jakarta.persistence.jdbc.driver"
