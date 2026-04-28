@@ -45,9 +45,7 @@ public class VendaRepositorio {
         Venda venda = null;
 
         try{
-            dao.em.getTransaction().begin();
             venda = dao.em.find(Venda.class, numero);
-            dao.em.getTransaction().commit();
         } catch (Exception e){
             System.out.println(e);
         } finally {
@@ -59,12 +57,25 @@ public class VendaRepositorio {
 
     public List<Venda> listarTodos(){
         dao.em = dao.emf.createEntityManager();
-        dao.em.getTransaction().begin();
-        TypedQuery consulta = dao.em.createQuery("Select vendas from Venda vendas", Venda.class);
-        List<Venda> venda = consulta.getResultList();
-        dao.em.getTransaction().commit();
-        dao.em.close();
+        try {
+            return dao.em.createQuery(
+                    "select distinct v from Venda v join fetch v.livros order by v.numero",
+                    Venda.class
+            ).getResultList();
+        } finally {
+            dao.em.close();
+        }
+    }
 
-        return venda;
+    public long qtdVendas(){
+        try {
+            dao.em = dao.emf.createEntityManager();
+            TypedQuery<Long> consulta = dao.em.createQuery(
+                    "Select COUNT(vendas) from Venda vendas", Long.class);
+            return consulta.getSingleResult();
+        } finally {
+            dao.em.close();
+
+        }
     }
 }

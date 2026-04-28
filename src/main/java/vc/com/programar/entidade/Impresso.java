@@ -1,8 +1,10 @@
 package vc.com.programar.entidade;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 @Entity
+@DiscriminatorValue("IMPRESSO")
 public class Impresso extends Livro{
     private double frete;
     private int estoque;

@@ -47,9 +47,7 @@ public class LivroRepositorio {
         Livro livro = null;
 
         try{
-            dao.em.getTransaction().begin();
             livro = dao.em.find(Livro.class, numero);
-            dao.em.getTransaction().commit();
         } catch (Exception e){
             System.out.println(e);
         } finally {
@@ -59,28 +57,32 @@ public class LivroRepositorio {
         return livro;
     }
 
-//    public void atualizarLivro(Livro livro){
-//        try{
-//            dao.em = dao.emf.createEntityManager();
-//            dao.em.getTransaction().begin();
-//
-//            Impresso novoLivro = dao.em.find(Impresso.class,livro.getId());
-//
-//            dao.em.getTransaction().commit();
-//
-//        } catch (Exception e){
-//            System.out.println(e);
-//        } finally {
-//            dao.em.close();
-//        }
-//    }
+    public void atualizarLivro(Livro livro){
+        dao.em = dao.emf.createEntityManager();
+
+        try{
+            dao.em.getTransaction().begin();
+
+            Livro novoLivro = dao.em.find(Livro.class,livro.getId());
+            if (novoLivro == null){
+                return;
+            }
+
+            if (novoLivro instanceof Impresso impresso){
+                impresso.atualizarEstoque();
+            }
+            dao.em.getTransaction().commit();
+        } catch (Exception e){
+            System.out.println(e);
+        } finally {
+            dao.em.close();
+        }
+    }
 
     public List<Livro> listarTodos(){
         dao.em = dao.emf.createEntityManager();
-        dao.em.getTransaction().begin();
         TypedQuery consulta = dao.em.createQuery("Select l from Livro l", Livro.class);
         List<Livro> livros = consulta.getResultList();
-        dao.em.getTransaction().commit();
         dao.em.close();
 
         return livros;
@@ -88,10 +90,8 @@ public class LivroRepositorio {
 
     public List<Impresso> listarTodosImpressos(){
         dao.em = dao.emf.createEntityManager();
-        dao.em.getTransaction().begin();
         TypedQuery consulta = dao.em.createQuery("Select i from Impresso i inner join Livro l on l.id = i.id", Impresso.class);
         List<Impresso> impressos = consulta.getResultList();
-        dao.em.getTransaction().commit();
         dao.em.close();
 
         return impressos;
@@ -99,12 +99,34 @@ public class LivroRepositorio {
 
     public List<Eletronico> listarTodosEletronicos(){
         dao.em = dao.emf.createEntityManager();
-        dao.em.getTransaction().begin();
         TypedQuery consulta = dao.em.createQuery("Select e from Eletronico e inner join Livro l on l.id = e.id", Eletronico.class);
         List<Eletronico> eletronicos = consulta.getResultList();
-        dao.em.getTransaction().commit();
         dao.em.close();
 
         return eletronicos;
+    }
+
+    public long qtdEletronicos(){
+        try {
+            dao.em = dao.emf.createEntityManager();
+            TypedQuery<Long> consulta = dao.em.createQuery(
+                    "Select COUNT(eletros) from Eletronico eletros", Long.class);
+            return consulta.getSingleResult();
+        } finally {
+            dao.em.close();
+
+        }
+    }
+
+    public long qtdImpressos(){
+        try {
+            dao.em = dao.emf.createEntityManager();
+            TypedQuery<Long> consulta = dao.em.createQuery(
+                    "Select COUNT(impressos) from Impresso impressos", Long.class);
+            return consulta.getSingleResult();
+        } finally {
+            dao.em.close();
+
+        }
     }
 }

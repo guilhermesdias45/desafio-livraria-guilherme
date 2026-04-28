@@ -7,8 +7,6 @@ import java.util.List;
 
 @Entity
 public class Venda {
-    private static int numVendas = 0;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int numero;
@@ -18,10 +16,10 @@ public class Venda {
     private List<Livro> livros;
 
     public Venda() {
+        this.livros = new ArrayList<>();
     }
 
     public Venda(String cliente, double valor) {
-        numVendas++;
 
         this.cliente = cliente;
         this.valor = valor;
@@ -38,19 +36,10 @@ public class Venda {
         for (Livro l : livros){
             System.out.println(l.toString());
         }
-
     }
 
     public void addLivro(Livro livro, int index){
-        livros.add(livro);
-    }
-
-    public int getNumVendas() {
-        return numVendas;
-    }
-
-    public void setNumVendas(int numVendas) {
-        this.numVendas = numVendas;
+        livros.add(index, livro);
     }
 
     public int getNumero() {
@@ -75,5 +64,13 @@ public class Venda {
 
     public void setValor(double valor) {
         this.valor = valor;
+    }
+
+    public void setLivros(List<Livro> livros) {
+        this.livros = livros;
+    }
+
+    public List<Livro> getLivros() {
+        return livros;
     }
 }
