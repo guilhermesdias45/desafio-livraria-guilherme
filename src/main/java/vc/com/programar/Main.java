@@ -19,7 +19,7 @@ public class Main {
                     """);
             opcao = lv.capturarNumero();
             if (opcao == 1){
-                lv.cadastrarLivro();
+                lv.insertsCadastrarLivro();
             }
             if (opcao == 2){
                 lv.realizarVenda();

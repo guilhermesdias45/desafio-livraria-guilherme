@@ -1,5 +1,6 @@
 package vc.com.programar.entidade;
 
+import vc.com.programar.excecao.ObjetoInvalidoException;
 import vc.com.programar.repositorio.LivroRepositorio;
 import vc.com.programar.repositorio.VendaRepositorio;
 
@@ -9,9 +10,9 @@ import java.util.Scanner;
 public class LivrariaVirtual {
     private final Scanner scan = new Scanner(System.in);
     private final Scanner apenasTexto = new Scanner(System.in);
-    private final int max_impressos = 10;
-    private final int max_eletronicos = 20;
-    private final int max_vendas =50;
+    private int max_impressos = 10;
+    private int max_eletronicos = 20;
+    private int max_vendas =50;
     private int numImpressos;
     private int numEletronicos;
     private int numVendas;
@@ -40,7 +41,52 @@ public class LivrariaVirtual {
         this.numVendas = (int) venda.qtdVendas();
     }
 
-    public void cadastrarLivro(){
+    public void cadastrarLivro(
+            int opcao,
+            String nome,
+            String autor,
+            String editora,
+            Double preco,
+            Double frete,
+            Integer estoque,
+            Integer tamanho
+            ){
+
+        if ((opcao == 1 || opcao == 3) && this.numImpressos >= max_impressos){
+            throw new ObjetoInvalidoException("Já atingiu o número de impressos máximo.");
+        }
+        if ((opcao == 2 || opcao == 3) && this.numEletronicos >= max_eletronicos){
+            throw new ObjetoInvalidoException("Já atingiu o número de eletrônicos máximo.");
+        }
+        if (nome == null || nome.isEmpty() ||
+        autor == null || autor.isEmpty() ||
+        editora == null || editora.isEmpty() ||
+        preco == null || preco <= 0){
+            throw new ObjetoInvalidoException("O livro deve conter nome, autor(es), editora e preço para ser cadastrado com sucesso.");
+        }
+
+        if (opcao == 1 || opcao == 3){
+            if (frete == null || frete <= 0 ||
+            estoque == null || estoque <= 0){
+                throw new ObjetoInvalidoException("O impresso deve conter frete e estoque válidos para ser cadastrado com sucesso.");
+            }
+
+            Impresso impresso = new Impresso(nome, autor, editora, preco, frete, estoque);
+
+            livro.salvar(impresso);
+        }
+        if (opcao == 2 || opcao == 3){
+            if (tamanho == null || tamanho <= 0){
+                throw new ObjetoInvalidoException("O eletrônico deve conter um tamanho válido para ser cadastrado com sucesso.");
+            }
+
+            Eletronico eletronico = new Eletronico(nome, autor, editora, preco, tamanho);
+
+            livro.salvar(eletronico);
+        }
+    }
+
+    public void insertsCadastrarLivro(){
         System.out.println("""
                 Qual tipo de livro será cadastrado?
                 1 - Impresso
@@ -50,11 +96,8 @@ public class LivrariaVirtual {
 
         int opcao = capturarNumero();
 
-        if ((opcao == 1 || opcao == 3) && this.numImpressos >= max_impressos){
-            System.out.println("Já atingiu o número de impressos máximo.");
-            return;
-        } else if ((opcao == 2 || opcao == 3) && this.numEletronicos >= max_eletronicos){
-            System.out.println("Já atingiu o número de eletrônicos máximo.");
+        if (opcao < 1 || opcao > 3){
+            System.out.println("Opção inválida.");
             return;
         }
 
@@ -67,27 +110,25 @@ public class LivrariaVirtual {
         System.out.println("Informe o preço do livro:");
         Double preco = capturarDecimal();
 
-        Double frete;
-        Integer estoque;
-        Integer tamanho;
+        Double frete = null;
+        Integer estoque = null;
+        Integer tamanho = null;
 
         if (opcao == 1 || opcao == 3){
             System.out.println("Informe o frete do livro:");
             frete = capturarDecimal();
             System.out.println("Informe o estoque do livro:");
             estoque = capturarNumero();
-
-            Impresso impresso = new Impresso(nome, autor, editora, preco, frete, estoque);
-
-            livro.salvar(impresso);
         }
         if (opcao == 2 || opcao == 3){
             System.out.println("Informe o tamanho do livro:");
             tamanho = capturarNumero();
+        }
 
-            Eletronico eletronico = new Eletronico(nome, autor, editora, preco, tamanho);
-
-            livro.salvar(eletronico);
+        try{
+            cadastrarLivro(opcao, nome, autor, editora, preco, frete, estoque, tamanho);
+        } catch (ObjetoInvalidoException e){
+            System.out.println(e.getMessage());
         }
     }
 
@@ -208,5 +249,17 @@ public class LivrariaVirtual {
                 vendasLista.get(i).listarLivros();
             }
         }
+    }
+
+    public void setMax_vendas(int max_vendas) {
+        this.max_vendas = max_vendas;
+    }
+
+    public void setMax_eletronicos(int max_eletronicos) {
+        this.max_eletronicos = max_eletronicos;
+    }
+
+    public void setMax_impressos(int max_impressos) {
+        this.max_impressos = max_impressos;
     }
 }

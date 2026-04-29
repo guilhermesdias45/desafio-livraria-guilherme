@@ -18,13 +18,14 @@
             <property name="jakarta.persistence.jdbc.url"
                       value="jdbc:mysql://localhost:3306/desafio_livraria?serverTimezone=UTC" />
             <property name="jakarta.persistence.jdbc.user"
-                      value="root" />
+                      value="<seu-usuario-banco-aqui>" />
             <property name="jakarta.persistence.jdbc.password"
-                      value="root" />
+                      value="<sua-senha-aqui>" />
 
             <property name="hibernate.dialect"
                       value="org.hibernate.dialect.MySQLDialect" />
-            <property name="hibernate.hbm2ddl.auto" value="update" />
+            <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
 
             <property name="hibernate.show_sql" value="true" />
             <property name="hibernate.format_sql" value="true" />

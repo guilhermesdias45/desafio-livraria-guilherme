@@ -12,7 +12,7 @@ public class Venda {
     private int numero;
     private String cliente;
     private double valor;
-    @ManyToMany
+    @ManyToMany()
     private List<Livro> livros;
 
     public Venda() {
